@@ -2,5 +2,5 @@ const Foundry = require("foundry");
 const DrawingConfigManager = require("./DrawingConfigManager");
 
 Foundry.Hooks.on("init", () => {
-  new DrawingConfigManager();
+  DrawingConfigManager.initialize();
 });

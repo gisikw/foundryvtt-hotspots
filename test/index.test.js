@@ -1,11 +1,10 @@
 const Foundry = require("foundry");
-
-const mockDrawingConfigManager = jest.fn();
-jest.mock("../src/DrawingConfigManager", () => mockDrawingConfigManager);
+const DrawingConfigManager = require("../src/DrawingConfigManager");
 require("../src/index");
 
-test("index.js creates a DrawingConfigManager on Foundry init", () => {
-  expect(mockDrawingConfigManager).not.toHaveBeenCalled();
+test("DrawingConfigManager is initialized on Foundry init", () => {
+  DrawingConfigManager.initialize = jest.fn();
+  expect(DrawingConfigManager.initialize).not.toHaveBeenCalled();
   Foundry.Hooks.call("init");
-  expect(mockDrawingConfigManager).toHaveBeenCalled();
+  expect(DrawingConfigManager.initialize).toHaveBeenCalled();
 });

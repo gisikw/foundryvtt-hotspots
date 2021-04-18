@@ -9,36 +9,46 @@ module.exports = window;
 
 /***/ }),
 /* 2 */
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const Foundry = __webpack_require__(1);
 
 class DrawingConfigManager {
-  constructor() {
-    Hooks.on("renderDrawingConfig", this.handleRenderDrawingConfig.bind(this));
+  static initialize() {
+    Foundry.Hooks.on(
+      "renderDrawingConfig",
+      DrawingConfigManager.handleRenderDrawingConfig.bind(this)
+    );
   }
 
-  async handleRenderDrawingConfig(_, html, data) {
+  static async handleRenderDrawingConfig(_, html, data) {
     // TODO: Permissions check
     await this.injectTab(html, data);
-    this.createDropZones(html); 
+    this.createDropZones(html);
   }
 
-  async injectTab(html, data) {
-    renderTemplate('modules/hotspots/templates/drawing-config-hotspots-nav.hbs').then(markup => {
-      html.find('.tabs .item').last().after(navMarkup);
+  static async injectTab(html, data) {
+    Foundry.renderTemplate(
+      "modules/hotspots/templates/drawing-config-hotspots-nav.hbs"
+    ).then((navMarkup) => {
+      html.find(".tabs .item").last().after(navMarkup);
     });
-    const tabMarkup = await renderTemplate('modules/hotspots/templates/drawing-config-hotspots-tab.hbs', data.object.flags.hotspots || {});
-    await html.find('.tab').last().after(tabMarkup);
+    const tabMarkup = await Foundry.renderTemplate(
+      "modules/hotspots/templates/drawing-config-hotspots-tab.hbs",
+      data.object.flags.hotspots || {}
+    );
+    await html.find(".tab").last().after(tabMarkup);
   }
 
-  createDropZones(html) {
-    (new DragDrop({
-      dropSelector: '.dropspot',
-      callbacks: { drop: this.handleDrop }
-    })).bind(html[0]);
+  static createDropZones(html) {
+    new Foundry.DragDrop({
+      dropSelector: ".dropspot",
+      callbacks: { drop: this.handleDrop.bind(this) },
+    }).bind(html[0]);
   }
 
-  handleDrop(event) {
-    const data = JSON.parse(event.dataTransfer.getData('text/plain'))
+  static handleDrop(event) {
+    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
     if (data.type === "Macro") {
       console.log("Received macro", data);
     }
@@ -79,11 +89,11 @@ module.exports = DrawingConfigManager;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const FVTT = __webpack_require__(1);
+const Foundry = __webpack_require__(1);
 const DrawingConfigManager = __webpack_require__(2);
 
-FVTT.Hooks.on("init", () => {
-  new DrawingConfigManager(); 
+Foundry.Hooks.on("init", () => {
+  DrawingConfigManager.initialize();
 });
 
 })();

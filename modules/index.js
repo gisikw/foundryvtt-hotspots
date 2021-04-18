@@ -2,42 +2,13 @@ console.log("HOTSPOTS WAS LOADED");
 
 let lastDragged;
 
-function _injectDrawingConfigTab(app, html, data) {
-  const tab = `
-    <a class='item' data-tab='hotspots'>
-      <i class='fas fa-wifi'></i> Hotspots
-    </a>
-  `;
-  const contents = `
-    <div class='tab' data-tab='hotspots'>
-      <p class='notes'>
-        Use this drawing to trigger a hotspot macro
-      </p>
-      <hr>
-      <h3 class='form-header'>
-        <i class="fas fa-mouse-pointer"/></i>
-        Click
-      </h3>
-      <p class='notes'>Description tktk</p>
-      <div class='form-group'>
-        <label for='clickMacro'>Macro name</label>
-        <input class='dropspot' type='text' name='flags.hotspots.clickMacro' data-dtype='String' value='${(data.object.flags.hotspots || {}).clickMacro}'>
-      </div>
-      <hr>
-      <h3 class='form-header'>
-        <i class="fas fa-arrows-alt"/></i>
-        Movement
-      </h3>
-      <p class='notes'>Description tktk</p>
-      <div class='form-group'>
-        <label for='moveMacro'>Macro name</label>
-        <input class='dropspot' type='text' name='flags.hotspots.moveMacro' data-dtype='String' value='${(data.object.flags.hotspots || {}).moveMacro}'>
-      </div>
-    </div>
-  `;
-  html.find(".tabs .item").last().after(tab);
-  html.find(".tab").last().after(contents);
-  // set up any onChange events we may want
+async function _injectDrawingConfigTab(app, html, data) {
+  renderTemplate('modules/hotspots/templates/drawing-config-hotspots-nav.hbs').then(markup => {
+    html.find('.tabs .item').last().after(markup);
+  });
+  renderTemplate('modules/hotspots/templates/drawing-config-hotspots-tab.hbs', data.object.flags.hotspots || {}).then(markup => {
+    html.find('.tab').last().after(markup);
+  });
 }
 
 function _supportDragDrop(html) {

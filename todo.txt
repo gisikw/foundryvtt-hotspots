@@ -10,3 +10,4 @@
 - Jest
 - Save actual macros - should work with a single field "id" or "package.pack.id"
 - point-in-polygon algorithm
+- Use a bundler - modules are a performance concern

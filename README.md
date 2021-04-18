@@ -27,3 +27,4 @@ const index = await compendium.getIndex()
 const foo = await compendium.getEntity(index.find(i => i.name === "Foo")._id);
 
 
+```

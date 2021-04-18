@@ -7,7 +7,7 @@ module.exports = {
       hooks[event].push(cb);
     },
     call(event, payload) {
-      (hooks[event]||[]).forEach(cb => cb(payload));
-    }
-  }
+      (hooks[event] || []).forEach((cb) => cb(payload));
+    },
+  },
 };

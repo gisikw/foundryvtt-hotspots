@@ -1,0 +1,17 @@
+{
+  "name": "hotspots",
+  "title": "Hotspots",
+  "description": "A tool for associating macros with drawings",
+  "author": "Kevin Gisi",
+  "version": "0.0.1",
+  "minimumCoreVersion": "0.7.9",
+  "esmodules": ["modules/index.js"],
+  "packs": [
+    {
+      "name": "hotspot-macros",
+      "label": "Hotspot Macros",
+      "path": "packs/hotspot-macros.db",
+      "entity": "Macro"
+    }
+  ]
+}

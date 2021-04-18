@@ -1,5 +1,6 @@
-import DrawingConfigManager from './DrawingConfigManager.js';
+const Foundry = require('foundry');
+const DrawingConfigManager = require('./DrawingConfigManager');
 
-Hooks.on("init", () => {
+Foundry.Hooks.on("init", () => {
   new DrawingConfigManager(); 
 });

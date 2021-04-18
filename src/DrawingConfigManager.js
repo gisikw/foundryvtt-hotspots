@@ -1,6 +1,8 @@
+const Foundry = require('foundry');
+
 class DrawingConfigManager {
   constructor() {
-    Hooks.on("renderDrawingConfig", this.handleRenderDrawingConfig.bind(this));
+    Foundry.Hooks.on("renderDrawingConfig", this.handleRenderDrawingConfig.bind(this));
   }
 
   async handleRenderDrawingConfig(_, html, data) {
@@ -18,7 +20,7 @@ class DrawingConfigManager {
   }
 
   createDropZones(html) {
-    (new DragDrop({
+    (new Foundry.DragDrop({
       dropSelector: '.dropspot',
       callbacks: { drop: this.handleDrop }
     })).bind(html[0]);
@@ -32,4 +34,4 @@ class DrawingConfigManager {
   }
 }
 
-export default DrawingConfigManager;
+module.exports = DrawingConfigManager;

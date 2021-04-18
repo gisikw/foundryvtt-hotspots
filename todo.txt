@@ -7,7 +7,5 @@
 - We can detect a change in token target, but not necessarily a click event. If we _do_ need "run this as GM" support, which we likely do if we want parity with e.g. multilevel tokens, then we need a message system for the DM. Abuse the chat? Whisper, but keep the record hidden somehow
 - ESLint
 - Prettier
-- Jest
 - Save actual macros - should work with a single field "id" or "package.pack.id"
 - point-in-polygon algorithm
-- Use a bundler - modules are a performance concern

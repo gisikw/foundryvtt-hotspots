@@ -9,5 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: npx prettier --check "**/*.+(js|json|css|md|yml|yaml)"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - run: npm install
       - run: npm run lint
       - run: npm test

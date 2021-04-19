@@ -8,4 +8,5 @@ module.exports = {
   renderTemplate,
   DragDrop,
   Hooks,
+  canvas: () => canvas,
 };

@@ -3,4 +3,5 @@
   - https://github.com/grandseiken/foundryvtt-multilevel-tokens/blob/master/multilevel.js
 - point-in-polygon algorithm
 - Find a nice way to encode whether we need GM privileges or not
+- socket: true in module.json
 - i18n

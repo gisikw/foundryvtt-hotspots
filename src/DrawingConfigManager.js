@@ -1,5 +1,5 @@
 const Foundry = require("./utils/foundry");
-const MacroLookup = require("./MacroLookup");
+const MacroManager = require("./MacroManager");
 
 class DrawingConfigManager {
   static initialize() {
@@ -23,7 +23,7 @@ class DrawingConfigManager {
       Object.values(hotspotData)
         .filter(({ macro }) => macro && macro.length)
         .map(async (dataset) => {
-          const macro = await MacroLookup.find(dataset.macro, dataset.pack);
+          const macro = await MacroManager.find(dataset.macro, dataset.pack);
           dataset.img = macro.data.img;
         })
     );
@@ -54,7 +54,7 @@ class DrawingConfigManager {
     const data = JSON.parse(event.dataTransfer.getData("text/plain"));
     if (data.type !== "Macro") return;
     const { id, pack } = data;
-    const macro = await MacroLookup.find(id, pack);
+    const macro = await MacroManager.find(id, pack);
     const img =
       event.target.tagName === "IMG" ? event.target : event.target.firstChild;
     img.src = macro.data.img;

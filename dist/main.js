@@ -14,6 +14,7 @@ module.exports = {
   renderTemplate,
   DragDrop,
   Hooks,
+  canvas: () => canvas,
 };
 
 
@@ -22,7 +23,7 @@ module.exports = {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 const Foundry = __webpack_require__(1);
-const MacroLookup = __webpack_require__(3);
+const MacroManager = __webpack_require__(3);
 
 class DrawingConfigManager {
   static initialize() {
@@ -46,7 +47,7 @@ class DrawingConfigManager {
       Object.values(hotspotData)
         .filter(({ macro }) => macro && macro.length)
         .map(async (dataset) => {
-          const macro = await MacroLookup.find(dataset.macro, dataset.pack);
+          const macro = await MacroManager.find(dataset.macro, dataset.pack);
           dataset.img = macro.data.img;
         })
     );
@@ -77,7 +78,7 @@ class DrawingConfigManager {
     const data = JSON.parse(event.dataTransfer.getData("text/plain"));
     if (data.type !== "Macro") return;
     const { id, pack } = data;
-    const macro = await MacroLookup.find(id, pack);
+    const macro = await MacroManager.find(id, pack);
     const img =
       event.target.tagName === "IMG" ? event.target : event.target.firstChild;
     img.src = macro.data.img;
@@ -113,14 +114,99 @@ module.exports = DrawingConfigManager;
 
 const Foundry = __webpack_require__(1);
 
-class MacroLookup {
+class MacroManager {
   static async find(id, pack) {
     if (!pack) return game.macros.get(id);
     return await game.packs.get(pack).getEntity(id);
   }
+
+  static execute(macro) {
+    if (macro.data.type === "chat") {
+      ui.chat.processMessage(macro.data.command).catch(err => {
+        ui.notifications.error("There was an error in your chat message syntax.");
+        console.error(err);
+      });
+    } else if (macro.data.type === "script") {
+      try {
+        eval(macro.data.command);
+      } catch(err) {
+        ui.notifications.error(`There was an error in your macro syntax. See the browser console for details`);
+        console.error(err);
+      }
+    }
+  }
 }
 
-module.exports = MacroLookup;
+module.exports = MacroManager;
+
+
+/***/ }),
+/* 4 */
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const Foundry = __webpack_require__(1);
+
+class CanvasObserver {
+  static initialize() {
+    Foundry.Hooks.on('canvasReady', this.refreshBoardListener.bind(this));
+    // Foundry.Hooks.on('updateScene', this.refreshBoardListener.bind(this)); 
+    // on drawing added, keep it in the cache?
+  }
+
+  static refreshBoardListener(a, b, diff, sceneId) {
+    console.log("Refreshing board listener");
+    const canvas = Foundry.canvas();
+
+    // https://github.com/League-of-Foundry-Developers/fvtt-module-trigger-happy/blob/master/trigger.js#L204
+    // Looks like we want to add our events on our own to canvas.stage, which is the parent pixi container to all the layers
+
+    // This intercepts everything on the canvas, but gives us precious little;
+    // we'll be rebuilding things from scratch
+    // document.getElementById('board').addEventListener('mouseup', (...args) => {
+    //   console.log('Hopefully we intercept everything now');
+    // });
+
+    // This doesn't fire when the user clicks tiles. Maybe that's fine?
+    // const original = canvas.mouseInteractionManager.callbacks.clickLeft;
+    // canvas.mouseInteractionManager.callbacks.clickLeft = (...args) => {
+    //   console.log("Maybe we intercept first");
+    //   original(...args);
+    // };
+
+    // This doesn't work much at all - they aren't clickable unless in the drawing tool
+    // Foundry.canvas().drawings.placeables.forEach(drawing => {
+
+    //   console.log("Manipulating drawing");
+    //   drawing.frame.handle.on("mouseup", () => {
+    //     console.log("Intercepted");
+    //   });
+    // });
+  }
+
+  static handleBoardClick(event) {
+    console.log('got click event from board');
+
+    // const {x, y} = convertCoordsToMapCoords(event);
+    // if (!drawingBoundingBoxesInclude(x, y)) return;
+    // const intersectingDrawing = drawings.find(d => drawingContainsPoint(x, y));
+    // const macroCompositeId = intersectingDrawing.flags.hotspots.clickMacro;  
+    // let macro;
+    // if (macroCompositeId.includes('@')) {
+    //   const [pack, macro] = macroCompositeId.split('@');
+    //   const compendium = game.packs.get(pack);
+    //   macro = await compendium.getEntity(macroCompositeId);
+    // } else {
+    //   macro = game.macros.get(macroCompositeId);
+    // }
+    // if (this.macroRequiresGM(macro) && !this.isTheGM()) {
+    //   this.requestGMMacro(macroCompositeId);
+    // } else {
+    //   this.executeMacro(macro);
+    // }
+  }
+}
+
+module.exports = CanvasObserver;
 
 
 /***/ })
@@ -156,9 +242,11 @@ var __webpack_exports__ = {};
 (() => {
 const Foundry = __webpack_require__(1);
 const DrawingConfigManager = __webpack_require__(2);
+const CanvasObserver = __webpack_require__(4);
 
 Foundry.Hooks.on("init", () => {
   DrawingConfigManager.initialize();
+  CanvasObserver.initialize();
 });
 
 })();

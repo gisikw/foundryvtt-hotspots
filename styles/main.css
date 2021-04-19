@@ -1,0 +1,30 @@
+form .form-group > .hotspots-macro-target {
+  position: relative;
+  flex: 0 0 50px;
+  height: 50px;
+  border: 1px solid #000;
+  border-radius: 2px;
+}
+
+form .form-group > .hotspots-macro-target img {
+  height: 48px;
+  width: 48px;
+  object-fit: cover;
+  object-position: 50% 50%;
+  border: none;
+}
+
+.hotspots-delete-macro {
+  display: none;
+  position: absolute;
+  right: 1px;
+  top: 0;
+}
+
+.hotspots-delete-macro.enabled {
+  display: block;
+}
+
+.hotspots-delete-macro:hover {
+  text-shadow: 0 0 5px #f00;
+}

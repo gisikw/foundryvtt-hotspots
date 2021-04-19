@@ -2,8 +2,8 @@ const Foundry = require("./utils/foundry");
 
 class CanvasObserver {
   static initialize() {
-    Foundry.Hooks.on('canvasReady', this.refreshBoardListener.bind(this));
-    // Foundry.Hooks.on('updateScene', this.refreshBoardListener.bind(this)); 
+    Foundry.Hooks.on("canvasReady", this.refreshBoardListener.bind(this));
+    // Foundry.Hooks.on('updateScene', this.refreshBoardListener.bind(this));
     // on drawing added, keep it in the cache?
   }
 
@@ -38,12 +38,12 @@ class CanvasObserver {
   }
 
   static handleBoardClick(event) {
-    console.log('got click event from board');
+    console.log("got click event from board");
 
     // const {x, y} = convertCoordsToMapCoords(event);
     // if (!drawingBoundingBoxesInclude(x, y)) return;
     // const intersectingDrawing = drawings.find(d => drawingContainsPoint(x, y));
-    // const macroCompositeId = intersectingDrawing.flags.hotspots.clickMacro;  
+    // const macroCompositeId = intersectingDrawing.flags.hotspots.clickMacro;
     // let macro;
     // if (macroCompositeId.includes('@')) {
     //   const [pack, macro] = macroCompositeId.split('@');

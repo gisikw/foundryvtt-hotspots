@@ -122,15 +122,19 @@ class MacroManager {
 
   static execute(macro) {
     if (macro.data.type === "chat") {
-      ui.chat.processMessage(macro.data.command).catch(err => {
-        ui.notifications.error("There was an error in your chat message syntax.");
+      ui.chat.processMessage(macro.data.command).catch((err) => {
+        ui.notifications.error(
+          "There was an error in your chat message syntax."
+        );
         console.error(err);
       });
     } else if (macro.data.type === "script") {
       try {
         eval(macro.data.command);
-      } catch(err) {
-        ui.notifications.error(`There was an error in your macro syntax. See the browser console for details`);
+      } catch (err) {
+        ui.notifications.error(
+          `There was an error in your macro syntax. See the browser console for details`
+        );
         console.error(err);
       }
     }
@@ -148,8 +152,8 @@ const Foundry = __webpack_require__(1);
 
 class CanvasObserver {
   static initialize() {
-    Foundry.Hooks.on('canvasReady', this.refreshBoardListener.bind(this));
-    // Foundry.Hooks.on('updateScene', this.refreshBoardListener.bind(this)); 
+    Foundry.Hooks.on("canvasReady", this.refreshBoardListener.bind(this));
+    // Foundry.Hooks.on('updateScene', this.refreshBoardListener.bind(this));
     // on drawing added, keep it in the cache?
   }
 
@@ -184,12 +188,12 @@ class CanvasObserver {
   }
 
   static handleBoardClick(event) {
-    console.log('got click event from board');
+    console.log("got click event from board");
 
     // const {x, y} = convertCoordsToMapCoords(event);
     // if (!drawingBoundingBoxesInclude(x, y)) return;
     // const intersectingDrawing = drawings.find(d => drawingContainsPoint(x, y));
-    // const macroCompositeId = intersectingDrawing.flags.hotspots.clickMacro;  
+    // const macroCompositeId = intersectingDrawing.flags.hotspots.clickMacro;
     // let macro;
     // if (macroCompositeId.includes('@')) {
     //   const [pack, macro] = macroCompositeId.split('@');

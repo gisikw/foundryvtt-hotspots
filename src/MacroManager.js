@@ -8,15 +8,19 @@ class MacroManager {
 
   static execute(macro) {
     if (macro.data.type === "chat") {
-      ui.chat.processMessage(macro.data.command).catch(err => {
-        ui.notifications.error("There was an error in your chat message syntax.");
+      ui.chat.processMessage(macro.data.command).catch((err) => {
+        ui.notifications.error(
+          "There was an error in your chat message syntax."
+        );
         console.error(err);
       });
     } else if (macro.data.type === "script") {
       try {
         eval(macro.data.command);
-      } catch(err) {
-        ui.notifications.error(`There was an error in your macro syntax. See the browser console for details`);
+      } catch (err) {
+        ui.notifications.error(
+          `There was an error in your macro syntax. See the browser console for details`
+        );
         console.error(err);
       }
     }

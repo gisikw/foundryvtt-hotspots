@@ -1,4 +1,4 @@
-const Foundry = require("foundry");
+const Foundry = require("./utils/foundry");
 
 class DrawingConfigManager {
   static initialize() {

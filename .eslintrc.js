@@ -9,7 +9,6 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
-    "import/no-unresolved": [2, { ignore: ["foundry"] }],
     "no-console": "off",
   },
 };

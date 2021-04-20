@@ -13,3 +13,7 @@
   - RollTable: Run the rolltable
   - Playlist: Trigger the playlist, I guess
 - Use mergeObject so we can infer the shape of things
+
+- https://github.com/grandseiken/foundryvtt-multilevel-tokens
+- https://github.com/League-of-Foundry-Developers/fvtt-module-trigger-happy
+- https://github.com/moo-man/FVTT-SelectiveShow

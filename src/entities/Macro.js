@@ -2,7 +2,7 @@ const Entity = require("../Entity");
 const Foundry = require("../utils/foundry");
 
 class Macro extends Entity {
-  async getImg() {
+  getImg() {
     return this.object.data.img;
   }
 

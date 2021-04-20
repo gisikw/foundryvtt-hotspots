@@ -1,11 +1,12 @@
+/* eslint-disable global-require */
+
 const Foundry = require("./utils/foundry");
 
 class Entity {
   static async fromUuid(uuid) {
-    console.log("Creating one for ", uuid);
     const object = await Foundry.fromUuid(uuid);
-    const subclass = Entity.subclasses[object.entity] || Entity;
-    return new subclass(uuid, object);
+    const Subclass = Entity.subclasses[object.entity] || Entity;
+    return new Subclass(uuid, object);
   }
 
   constructor(uuid, object) {
@@ -13,18 +14,31 @@ class Entity {
     this.object = object;
   }
 
-  async getImg() {
+  getImg() {
     return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
   }
 
-  async activate() {
-    console.log("Not yet defined");
+  getName() {
+    return this.object.data.name;
+  }
+
+  getType() {
+    return this.object.entity;
+  }
+
+  getIcon() {
+    return "";
   }
 }
 
 module.exports = Entity;
 
 Entity.subclasses = {
-  Macro: require("./entities/Macro"),
+  Actor: require("./entities/Actor"),
+  Item: require("./entities/Item"),
   JournalEntry: require("./entities/JournalEntry"),
+  Macro: require("./entities/Macro"),
+  Playlist: require("./entities/Playlist"),
+  RollTable: require("./entities/RollTable"),
+  Scene: require("./entities/Scene"),
 };

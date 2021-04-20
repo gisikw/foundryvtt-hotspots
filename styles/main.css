@@ -1,12 +1,22 @@
-form .form-group > .hotspots-macro-target {
+form .form-group.hotspots {
+  align-items: start;
+}
+
+form .form-group.hotspots > * {
+  flex: initial;
+}
+
+form .form-group .hotspots-target {
+  background: rgba(0, 0, 0, 0.5);
   position: relative;
-  flex: 0 0 50px;
+  width: 50px;
   height: 50px;
   border: 1px solid #000;
   border-radius: 2px;
+  margin-right: 10px;
 }
 
-form .form-group > .hotspots-macro-target img {
+form .form-group .hotspots-target img {
   height: 48px;
   width: 48px;
   object-fit: cover;
@@ -14,17 +24,46 @@ form .form-group > .hotspots-macro-target img {
   border: none;
 }
 
-.hotspots-delete-macro {
-  display: none;
+.hotspots-icon {
   position: absolute;
-  right: 1px;
   top: 0;
+  left: 0;
+  color: #fff;
+  font-size: 32px;
+  width: 50px;
+  line-height: 50px;
+  text-align: center;
 }
 
-.hotspots-delete-macro.enabled {
+.hotspots-fields {
+  display: none;
+}
+
+.hotspots-fields.enabled {
   display: block;
 }
 
-.hotspots-delete-macro:hover {
+.hotspots-field {
+  display: flex;
+  align-items: end;
+}
+
+.hotspots-type {
+  font-size: 12px;
+  color: #4b4a44;
+}
+
+.hotspots-delete {
+  position: absolute;
+  right: 1px;
+  top: 0;
+  z-index: 1;
+}
+
+.hotspots-delete.enabled {
+  display: block;
+}
+
+.hotspots-delete:hover {
   text-shadow: 0 0 5px #f00;
 }

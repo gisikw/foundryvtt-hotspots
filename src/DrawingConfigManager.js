@@ -6,15 +6,27 @@ const SUPPORTED_DRAWING_TYPES = [
   Foundry.CONST.DRAWING_TYPES.ELLIPSE,
   Foundry.CONST.DRAWING_TYPES.POLYGON,
 ];
-const SUPPORTED_ENTITY_TYPES = [
-  "Actor",
-  "Item",
-  "Scene",
-  "JournalEntry",
-  "Macro",
-  "RollTable",
-  "Playlist",
-];
+const BASE_HOTSPOT_DATA = {
+  click: {
+    title: "Click",
+    categoryIcon: "fa-mouse-pointer",
+    description:
+      "This macro will fire when a player clicks within the bounds of the drawing.",
+  },
+  enter: {
+    title: "Enter",
+    categoryIcon: "fa-sign-in-alt",
+    description:
+      "Select a macro to fire when a player's token enters the bounds of the drawing.",
+  },
+  exit: {
+    title: "Exit",
+    categoryIcon: "fa-sign-out-alt",
+    description:
+      "Select a macro to fire when a player's token leaves the bounds of the drawing.",
+  },
+};
+const BLANK_IMG = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
 
 class DrawingConfigManager {
   static initialize() {
@@ -39,15 +51,30 @@ class DrawingConfigManager {
   }
 
   static async prepareData(data) {
-    const hotspotData = data.object.flags.hotspots || {};
-    await Promise.all(
-      Object.values(hotspotData)
-        .filter(({ uuid }) => uuid && uuid.length)
-        .map(async (dataset) => {
-          dataset.img = await (await Entity.fromUuid(dataset.uuid)).getImg();
-        })
+    const hotspotData = Foundry.mergeObject(
+      { ...BASE_HOTSPOT_DATA },
+      data.object.flags.hotspots
     );
-    return hotspotData;
+    return {
+      hotspots: Object.fromEntries(
+        await Promise.all(
+          Object.keys(hotspotData).map(async (key) => {
+            const value = {
+              img: BLANK_IMG,
+              ...hotspotData[key],
+            };
+            if (value.uuid) {
+              const entity = await Entity.fromUuid(value.uuid);
+              value.img = entity.getImg();
+              value.type = entity.getType();
+              value.name = entity.getName();
+              value.icon = entity.getIcon();
+            }
+            return [key, value];
+          })
+        )
+      ),
+    };
   }
 
   static async injectTab(html, hotspotData) {
@@ -65,7 +92,7 @@ class DrawingConfigManager {
 
   static createDropZones(html) {
     new Foundry.DragDrop({
-      dropSelector: ".hotspots-macro-target",
+      dropSelector: ".hotspots-target",
       callbacks: { drop: this.handleDrop.bind(this) },
     }).bind(html[0]);
   }
@@ -74,28 +101,30 @@ class DrawingConfigManager {
     const { type, pack, id } = JSON.parse(
       event.dataTransfer.getData("text/plain")
     );
-    if (!SUPPORTED_ENTITY_TYPES.includes(type)) return;
+    if (!Object.keys(Entity.subclasses).includes(type)) return;
     const uuid = pack ? `Compendium.${pack}.${id}` : `${type}.${id}`;
     const entity = await Entity.fromUuid(uuid);
-    const img =
-      event.target.tagName === "IMG" ? event.target : event.target.firstChild;
-    img.src = await entity.getImg();
-    img.previousElementSibling.classList.add("enabled");
-    $(img).closest(".form-group").find("input[type='hidden']").val(uuid);
+    const $group = $(event.target).closest(".form-group");
+    $group.find("img").attr("src", entity.getImg());
+    $group
+      .find(".hotspots-icon")
+      .removeClass()
+      .addClass(`hotspots-icon fas ${entity.getIcon()}`);
+    $group.find(".hotspots-name").text(entity.getName());
+    $group.find(".hotspots-type").text(`(${entity.getType()})`);
+    $group.find("input[type='hidden']").val(uuid);
+    $group.find(".hotspots-fields").addClass("enabled");
   }
 
   static addDeleteListeners(html) {
-    html.find(".hotspots-delete-macro").on("click", ({ target }) => {
-      target.classList.remove("enabled");
+    html.find(".hotspots-delete").on("click", ({ target }) => {
       const $target = $(target);
+      $target.removeClass("enabled");
       const $group = $target.closest(".form-group");
+      $group.find(".hotspots-fields").removeClass("enabled");
       $group.find("input[type='hidden']").val("");
-      $group
-        .find("img")
-        .attr(
-          "src",
-          "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-        );
+      $group.find("img").attr("src", BLANK_IMG);
+      $group.find(".hotspots-icon").removeClass().addClass("hotspots-icon fas");
     });
   }
 }

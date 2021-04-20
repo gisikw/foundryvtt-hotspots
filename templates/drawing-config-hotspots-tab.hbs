@@ -7,49 +7,29 @@
     By default, the macros will fire even when the drawing is hidden to players.
   </p>
   <hr>
-  <h3 class='form-header'>
-    <i class="fas fa-mouse-pointer"/></i>
-    Click
-  </h3>
-  <p class='notes'>This macro will fire when a player clicks within the bounds of the drawing.</p>
-  <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.click.disableHidden' data-dtype='Boolean' {{#if click.disableHidden }}checked{{/if}}>
-    <label for='flags.hotspots.click.disableHidden'>Disable when hidden</label>
-    <input type='hidden' name='flags.hotspots.click.uuid' data-dtype='String' value='{{ click.uuid }}'>
-    <div class='hotspots-macro-target'>
-      <i class='hotspots-delete-macro fas fa-times {{#if click.uuid }}enabled{{/if}}'></i>
-      <img src='{{#if click.img }}{{ click.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
+  {{#each hotspots}}
+    <h3 class='form-header'><i class="fas {{ this.categoryIcon }}"/></i> {{ this.title }}</h3>
+    <p class='notes'>{{ this.description }}</p>
+    <div class='form-group hotspots'>
+      <div class='hotspots-target'>
+        <input type='hidden' name='flags.hotspots.{{ @key }}.uuid' data-dtype='String' value='{{ this.uuid }}'>
+        <i class='hotspots-delete fas fa-times {{#if this.uuid }}enabled{{/if}}'></i>
+        <i class='hotspots-icon fas {{ this.icon }}'></i>
+        <img src='{{ this.img }}'>
+      </div>
+      <div class='hotspots-fields {{#if this.uuid }} enabled{{/if}}'>
+        <div>
+          <span class='hotspots-name'>{{ this.name }}</span>
+          {{ ' ' }}
+          <span class='hotspots-type'>({{ this.type }})</span>
+          <hr>
+        </div>
+        <div class='hotspots-field'>
+          <input type='checkbox' id='hotspots.{{ @key }}.disableHidden' name='flags.hotspots.{{ @key }}.disableHidden' data-dtype='Boolean' {{#if this.disableHidden }}checked{{/if}}>
+          <label for='hotspots.{{ @key }}.disableHidden'>Disable when hidden</label>
+        </div>
+      </div>
     </div>
-  </div>
-  <hr>
-  <h3 class='form-header'>
-    <i class="fas fa-sign-in-alt"/></i>
-    Enter
-  </h3>
-  <p class='notes'>Select a macro to fire when a player's token enters the bounds of the drawing.</p>
-  <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.enter.disableHidden' data-dtype='Boolean' {{#if enter.disableHidden }}checked{{/if}}>
-    <label for='flags.hotspots.enter.disableHidden'>Disable when hidden</label>
-    <input type='hidden' name='flags.hotspots.enter.uuid' data-dtype='String' value='{{ enter.uuid }}'>
-    <div class='hotspots-macro-target'>
-      <i class='hotspots-delete-macro fas fa-times {{#if enter.uuid }}enabled{{/if}}'></i>
-      <img src='{{#if enter.img }}{{ enter.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
-    </div>
-  </div>
-  <hr>
-  <h3 class='form-header'>
-    <i class="fas fa-sign-out-alt"/></i>
-    Exit
-  </h3>
-  <p class='notes'>Select a macro to fire when a player's token leaves the bounds of the drawing.</p>
-  <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.exit.disableHidden' data-dtype='Boolean' {{#if exit.disableHidden }}checked{{/if}}>
-    <label for='flags.hotspots.exit.disableHidden'>Disable when hidden</label>
-    <input type='hidden' name='flags.hotspots.exit.uuid' data-dtype='String' value='{{ exit.uuid }}'>
-    <div class='hotspots-macro-target'>
-      <i class='hotspots-delete-macro fas fa-times {{#if exit.uuid }}enabled{{/if}}'></i>
-      <img src='{{#if exit.img }}{{ exit.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
-    </div>
-  </div>
-  <hr>
+    <hr>
+  {{/each}}
 </div>

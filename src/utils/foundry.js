@@ -6,6 +6,7 @@
 
 module.exports = {
   renderTemplate,
+  mergeObject,
   DragDrop,
   Hooks,
   CONST,

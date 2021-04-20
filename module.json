@@ -1,10 +1,11 @@
 {
   "name": "hotspots",
   "title": "Hotspots",
-  "description": "A tool for associating macros with drawings",
+  "description": "A tool for making drawings more interactive",
   "author": "Kevin Gisi",
   "version": "0.0.1",
   "minimumCoreVersion": "0.7.9",
+  "socket": "true",
   "scripts": ["dist/main.js"],
   "styles": ["styles/main.css"],
   "packs": [

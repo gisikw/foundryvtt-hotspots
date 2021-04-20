@@ -5,3 +5,4 @@
 - Find a nice way to encode whether we need GM privileges or not
 - socket: true in module.json
 - i18n
+- Don't add macro tab to unsupported drawings

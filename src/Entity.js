@@ -1,34 +1,30 @@
 const Foundry = require("./utils/foundry");
-const MacroManager = require("./MacroManager");
 
 class Entity {
-  // We probably wanna hit subclasses here,
-  // so aliasing the constructor for now.
-  static fromUuid(uuid) {
-    return new Entity(uuid);
+  static async fromUuid(uuid) {
+    console.log("Creating one for ", uuid);
+    const object = await Foundry.fromUuid(uuid);
+    const subclass = Entity.subclasses[object.entity] || Entity;
+    return new subclass(uuid, object);
   }
 
-  constructor(uuid) {
+  constructor(uuid, object) {
     this.uuid = uuid;
-    this.entity = Foundry.fromUuid(uuid);
+    this.object = object;
   }
 
   async getImg() {
-    const entity = await this.entity;
-    if (entity.entity === "Macro") {
-      return entity.data.img;
-    }
     return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
   }
 
   async activate() {
-    const entity = await this.entity;
-    if (entity.entity === "Macro") {
-      MacroManager.execute(entity);
-    } else if (entity.entity === "JournalEntry") {
-      Foundry.Journal._showEntry(this.uuid);
-    }
+    console.log("Not yet defined");
   }
 }
 
 module.exports = Entity;
+
+Entity.subclasses = {
+  "Macro": require("./entities/Macro"),
+  "JournalEntry": require("./entities/JournalEntry"),
+};

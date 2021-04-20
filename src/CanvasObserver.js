@@ -124,7 +124,7 @@ class CanvasObserver {
   }
 
   static async triggerEntity(drawing) {
-    Entity.fromUuid(drawing.data.flags.hotspots.click.uuid).activate();
+    (await Entity.fromUuid(drawing.data.flags.hotspots.click.uuid)).activate();
   }
 }
 

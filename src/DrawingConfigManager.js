@@ -44,7 +44,7 @@ class DrawingConfigManager {
       Object.values(hotspotData)
         .filter(({ uuid }) => uuid && uuid.length)
         .map(async (dataset) => {
-          dataset.img = await Entity.fromUuid(dataset.uuid).getImg();
+          dataset.img = await (await Entity.fromUuid(dataset.uuid)).getImg();
         })
     );
     return hotspotData;
@@ -76,7 +76,7 @@ class DrawingConfigManager {
     );
     if (!SUPPORTED_ENTITY_TYPES.includes(type)) return;
     const uuid = pack ? `Compendium.${pack}.${id}` : `${type}.${id}`;
-    const entity = Entity.fromUuid(uuid);
+    const entity = await Entity.fromUuid(uuid);
     const img =
       event.target.tagName === "IMG" ? event.target : event.target.firstChild;
     img.src = await entity.getImg();

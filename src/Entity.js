@@ -25,6 +25,6 @@ class Entity {
 module.exports = Entity;
 
 Entity.subclasses = {
-  "Macro": require("./entities/Macro"),
-  "JournalEntry": require("./entities/JournalEntry"),
+  Macro: require("./entities/Macro"),
+  JournalEntry: require("./entities/JournalEntry"),
 };

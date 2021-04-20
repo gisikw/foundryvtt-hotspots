@@ -4,16 +4,8 @@
 - Build socket logic to execute macro as GM
 - i18n
 - More tests
-- Expand what can be dragged into the hotspots, since we don't want to create security vulnerabilities by letting the GM run macros on other user's machines.
-  - Actor: Open the character sheet
-  - Item: Open the item sheet
-  - Scene: Move the player to the scene
-  - JournalEntry: Open the entry
-  - Macro: Run the macro on the GM's machine
-  - RollTable: Run the rolltable
-  - Playlist: Trigger the playlist, I guess
-- Use mergeObject so we can infer the shape of things
 
+- Credit reference plugins
 - https://github.com/grandseiken/foundryvtt-multilevel-tokens
 - https://github.com/League-of-Foundry-Developers/fvtt-module-trigger-happy
 - https://github.com/moo-man/FVTT-SelectiveShow

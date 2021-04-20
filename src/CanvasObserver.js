@@ -93,7 +93,7 @@ class CanvasObserver {
       const cx = point.x - x;
       const cy = point.y - y;
       let w = 0;
-      for (let i0 = 0; i0 < data.points.length; ++i0) {
+      for (let i0 = 0; i0 < data.points.length; i0 += 1) {
         const i1 = i0 + 1 === data.points.length ? 0 : i0 + 1;
         if (
           data.points[i0][1] <= cy &&
@@ -104,7 +104,7 @@ class CanvasObserver {
               (cx - data.points[i0][0]) >
             0
         ) {
-          ++w;
+          w += 1;
         }
         if (
           data.points[i0][1] > cy &&
@@ -115,7 +115,7 @@ class CanvasObserver {
               (cx - data.points[i0][0]) <
             0
         ) {
-          --w;
+          w -= 1;
         }
       }
       return w !== 0;

@@ -1,10 +1,11 @@
 const Foundry = require("./utils/foundry");
 const MacroManager = require("./MacroManager");
+const DRAWING_CHANGE_HOOKS = ["updateScene", "updateDrawing", "deleteDrawing"];
 
 class CanvasObserver {
   static initialize() {
     Foundry.Hooks.on("canvasReady", this.handleCanvasReady.bind(this));
-    ["updateScene", "updateDrawing", "deleteDrawing"].forEach((hook) => {
+    DRAWING_CHANGE_HOOKS.forEach((hook) => {
       Foundry.Hooks.on(hook, this.updateActiveDrawingTargets.bind(this));
     });
   }
@@ -42,9 +43,11 @@ class CanvasObserver {
   }
 
   static handleBoardClick(event) {
-    if (!this.activeDrawingTargets.length) return;
-    if (Foundry.canvas().activeLayer === Foundry.canvas().drawings) return;
-
+    if (
+      !this.activeDrawingTargets.length ||
+      Foundry.canvas().activeLayer === Foundry.canvas().drawings
+    )
+      return;
     const point = this.getCanvasPoint(event);
     const intersection = this.activeDrawingTargets.find((drawing) => {
       return (
@@ -52,7 +55,6 @@ class CanvasObserver {
         this.isPointInsideShape(point, drawing)
       );
     });
-
     if (intersection) this.executeClickMacro(intersection);
   }
 
@@ -77,10 +79,10 @@ class CanvasObserver {
   static isPointInsideShape(point, drawing) {
     const { data } = drawing;
     const { width, height, x, y } = data;
-    if (drawing.type === Foundry.CONST.DRAWING_TYPES.RECTANGLE) {
+    if (data.type === Foundry.CONST.DRAWING_TYPES.RECTANGLE) {
       return true;
     }
-    if (drawing.type === Foundry.CONST.DRAWING_TYPES.ELLIPSE) {
+    if (data.type === Foundry.CONST.DRAWING_TYPES.ELLIPSE) {
       if (!width || !height) return false;
       const dx = x + width / 2 - point.x;
       const dy = y + height / 2 - point.y;
@@ -90,7 +92,7 @@ class CanvasObserver {
         1
       );
     }
-    if (drawing.type === Foundry.CONST.DRAWING_TYPES.POLYGON) {
+    if (data.type === Foundry.CONST.DRAWING_TYPES.POLYGON) {
       const cx = point.x - x;
       const cy = point.y - y;
       let w = 0;

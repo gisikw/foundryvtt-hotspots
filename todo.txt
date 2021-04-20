@@ -1,8 +1,15 @@
-- Probably nuke the packaged compendium either way
-- We can detect a change in token target, but not necessarily a click event. If we _do_ need "run this as GM" support, which we likely do if we want parity with e.g. multilevel tokens, then we need a message system for the DM. Abuse the chat? Whisper, but keep the record hidden somehow
-  - https://github.com/grandseiken/foundryvtt-multilevel-tokens/blob/master/multilevel.js
-- point-in-polygon algorithm
-- Find a nice way to encode whether we need GM privileges or not
+- Add representative macros to the compendium
+- Extract intersection logic to a wrapper class
 - socket: true in module.json
+- Build socket logic to execute macro as GM
 - i18n
-- Don't add macro tab to unsupported drawings
+- More tests
+- Expand what can be dragged into the hotspots, since we don't want to create security vulnerabilities by letting the GM run macros on other user's machines.
+  - Actor: Open the character sheet
+  - Item: Open the item sheet
+  - Scene: Move the player to the scene
+  - JournalEntry: Open the entry
+  - Macro: Run the macro on the GM's machine
+  - RollTable: Run the rolltable
+  - Playlist: Trigger the playlist, I guess
+- Use mergeObject so we can infer the shape of things

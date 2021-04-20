@@ -1,5 +1,10 @@
 const Foundry = require("./utils/foundry");
 const MacroManager = require("./MacroManager");
+const ALLOWABLE_TYPES = [
+  Foundry.CONST.DRAWING_TYPES.RECTANGLE,
+  Foundry.CONST.DRAWING_TYPES.ELLIPSE,
+  Foundry.CONST.DRAWING_TYPES.POLYGON,
+];
 
 class DrawingConfigManager {
   static initialize() {
@@ -10,7 +15,10 @@ class DrawingConfigManager {
   }
 
   static async handleRenderDrawingConfig(_, html, data) {
-    // TODO: Permissions check
+    if (
+      !(Foundry.game().user.isGM && ALLOWABLE_TYPES.includes(data.object.type))
+    )
+      return;
     const hotspotData = await this.prepareData(data);
     await this.injectTab(html, hotspotData);
     this.createDropZones(html);

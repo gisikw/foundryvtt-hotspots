@@ -16,6 +16,10 @@ class MacroManager {
       });
     } else if (macro.data.type === "script") {
       try {
+        // const speaker = ChatMessage.getSpeaker();
+        // const actor = game.actors.get(speaker.actor);
+        // const token = canvas.tokens.get(speaker.token);
+        // const character = game.user.character;
         eval(macro.data.command);
       } catch (err) {
         ui.notifications.error(

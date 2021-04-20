@@ -84,7 +84,11 @@ class CanvasObserver {
       if (!width || !height) return false;
       const dx = x + width / 2 - point.x;
       const dy = y + height / 2 - point.y;
-      return 4 * (dx * dx) / (width * width) + 4 * (dy * dy) / (height * height) <= 1;
+      return (
+        (4 * (dx * dx)) / (width * width) +
+          (4 * (dy * dy)) / (height * height) <=
+        1
+      );
     }
     if (drawing.type === Foundry.CONST.DRAWING_TYPES.POLYGON) {
       const cx = point.x - x;
@@ -92,14 +96,26 @@ class CanvasObserver {
       let w = 0;
       for (let i0 = 0; i0 < data.points.length; ++i0) {
         let i1 = i0 + 1 === data.points.length ? 0 : i0 + 1;
-        if (data.points[i0][1] <= cy && data.points[i1][1] > cy &&
-            (data.points[i1][0] - data.points[i0][0]) * (cy - data.points[i0][1]) -
-            (data.points[i1][1] - data.points[i0][1]) * (cx - data.points[i0][0]) > 0) {
+        if (
+          data.points[i0][1] <= cy &&
+          data.points[i1][1] > cy &&
+          (data.points[i1][0] - data.points[i0][0]) *
+            (cy - data.points[i0][1]) -
+            (data.points[i1][1] - data.points[i0][1]) *
+              (cx - data.points[i0][0]) >
+            0
+        ) {
           ++w;
         }
-        if (data.points[i0][1] > cy && data.points[i1][1] <= cy &&
-            (data.points[i1][0] - data.points[i0][0]) * (cy - data.points[i0][1]) -
-            (data.points[i1][1] - data.points[i0][1]) * (cx - data.points[i0][0]) < 0) {
+        if (
+          data.points[i0][1] > cy &&
+          data.points[i1][1] <= cy &&
+          (data.points[i1][0] - data.points[i0][0]) *
+            (cy - data.points[i0][1]) -
+            (data.points[i1][1] - data.points[i0][1]) *
+              (cx - data.points[i0][0]) <
+            0
+        ) {
           --w;
         }
       }

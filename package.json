@@ -7,7 +7,7 @@
     "test": "jest",
     "build": "webpack",
     "build:watch": "webpack --watch",
-    "lint": "eslint src/**/*.js",
+    "lint": "eslint src",
     "format": "prettier --write \"**/*.+(js|json|css|md|yml|yaml)\""
   },
   "repository": {

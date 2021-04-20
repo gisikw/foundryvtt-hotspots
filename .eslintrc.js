@@ -8,7 +8,11 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 12,
   },
+  globals: {
+    $: "readonly",
+  },
   rules: {
     "no-console": "off",
+    "no-underscore-dangle": "off",
   },
 };

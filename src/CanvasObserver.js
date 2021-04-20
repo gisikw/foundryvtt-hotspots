@@ -1,5 +1,6 @@
 const Foundry = require("./utils/foundry");
-const MacroManager = require("./MacroManager");
+const Entity = require("./Entity");
+
 const DRAWING_CHANGE_HOOKS = ["updateScene", "updateDrawing", "deleteDrawing"];
 
 class CanvasObserver {
@@ -17,26 +18,23 @@ class CanvasObserver {
 
   static updateActiveDrawingTargets() {
     this.activeDrawingTargets = Foundry.canvas().drawings.placeables.filter(
-      (drawing) => {
-        return (
-          this.drawingHasClickMacro(drawing) &&
-          this.macroEnabledForHiddenStatus(drawing)
-        );
-      }
+      (drawing) =>
+        this.drawingHasClickHotspot(drawing) &&
+        this.hotspotEnabledForHiddenStatus(drawing)
     );
   }
 
-  static drawingHasClickMacro(drawing) {
-    const hotspots = drawing.data.flags.hotspots;
+  static drawingHasClickHotspot(drawing) {
+    const { hotspots } = drawing.data.flags;
     return (
       hotspots &&
       hotspots.click &&
-      hotspots.click.macro &&
-      hotspots.click.macro.length
+      hotspots.click.uuid &&
+      hotspots.click.uuid.length
     );
   }
 
-  static macroEnabledForHiddenStatus(drawing) {
+  static hotspotEnabledForHiddenStatus(drawing) {
     return !(
       drawing.data.flags.hotspots.click.disableHidden && drawing.data.hidden
     );
@@ -49,13 +47,12 @@ class CanvasObserver {
     )
       return;
     const point = this.getCanvasPoint(event);
-    const intersection = this.activeDrawingTargets.find((drawing) => {
-      return (
+    const intersection = this.activeDrawingTargets.find(
+      (drawing) =>
         this.isPointInsideBoundingBox(point, drawing) &&
         this.isPointInsideShape(point, drawing)
-      );
-    });
-    if (intersection) this.executeClickMacro(intersection);
+    );
+    if (intersection) this.triggerEntity(intersection);
   }
 
   static getCanvasPoint(event) {
@@ -97,7 +94,7 @@ class CanvasObserver {
       const cy = point.y - y;
       let w = 0;
       for (let i0 = 0; i0 < data.points.length; ++i0) {
-        let i1 = i0 + 1 === data.points.length ? 0 : i0 + 1;
+        const i1 = i0 + 1 === data.points.length ? 0 : i0 + 1;
         if (
           data.points[i0][1] <= cy &&
           data.points[i1][1] > cy &&
@@ -123,11 +120,11 @@ class CanvasObserver {
       }
       return w !== 0;
     }
+    return false;
   }
 
-  static async executeClickMacro(drawing) {
-    const { macro, pack } = drawing.data.flags.hotspots.click;
-    MacroManager.execute(await MacroManager.find(macro, pack));
+  static async triggerEntity(drawing) {
+    Entity.fromUuid(drawing.data.flags.hotspots.click.uuid).activate();
   }
 }
 

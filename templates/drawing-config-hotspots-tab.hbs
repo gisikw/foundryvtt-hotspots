@@ -13,12 +13,11 @@
   </h3>
   <p class='notes'>This macro will fire when a player clicks within the bounds of the drawing.</p>
   <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.click.disableHidden' data-dtype='Boolean' value='{{ click.disableHidden }}'>
+    <input type='checkbox' name='flags.hotspots.click.disableHidden' data-dtype='Boolean' {{#if click.disableHidden }}checked{{/if}}>
     <label for='flags.hotspots.click.disableHidden'>Disable when hidden</label>
-    <input type='hidden' data-field='macro' name='flags.hotspots.click.macro' data-dtype='String' value='{{ click.macro }}'>
-    <input type='hidden' data-field='pack' name='flags.hotspots.click.pack' data-dtype='String' value='{{ click.pack }}'>
+    <input type='hidden' name='flags.hotspots.click.uuid' data-dtype='String' value='{{ click.uuid }}'>
     <div class='hotspots-macro-target'>
-      <i class='hotspots-delete-macro fas fa-times {{#if click.macro }}enabled{{/if}}'></i>
+      <i class='hotspots-delete-macro fas fa-times {{#if click.uuid }}enabled{{/if}}'></i>
       <img src='{{#if click.img }}{{ click.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
     </div>
   </div>
@@ -29,11 +28,11 @@
   </h3>
   <p class='notes'>Select a macro to fire when a player's token enters the bounds of the drawing.</p>
   <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.enter.disableHidden' data-dtype='Boolean' value='{{ enter.disableHidden }}'>
+    <input type='checkbox' name='flags.hotspots.enter.disableHidden' data-dtype='Boolean' {{#if enter.disableHidden }}checked{{/if}}>
     <label for='flags.hotspots.enter.disableHidden'>Disable when hidden</label>
-    <input type='hidden' data-field='macro' name='flags.hotspots.enter.macro' data-dtype='String' value='{{ enter.macro }}'>
-    <input type='hidden' data-field='pack' name='flags.hotspots.enter.pack' data-dtype='String' value='{{ enter.pack }}'>
+    <input type='hidden' name='flags.hotspots.enter.uuid' data-dtype='String' value='{{ enter.uuid }}'>
     <div class='hotspots-macro-target'>
+      <i class='hotspots-delete-macro fas fa-times {{#if enter.uuid }}enabled{{/if}}'></i>
       <img src='{{#if enter.img }}{{ enter.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
     </div>
   </div>
@@ -44,11 +43,11 @@
   </h3>
   <p class='notes'>Select a macro to fire when a player's token leaves the bounds of the drawing.</p>
   <div class='form-group'>
-    <input type='checkbox' name='flags.hotspots.exit.disableHidden' data-dtype='Boolean' value='{{ exit.disableHidden }}'>
+    <input type='checkbox' name='flags.hotspots.exit.disableHidden' data-dtype='Boolean' {{#if exit.disableHidden }}checked{{/if}}>
     <label for='flags.hotspots.exit.disableHidden'>Disable when hidden</label>
-    <input type='hidden' data-field='macro' name='flags.hotspots.exit.macro' data-dtype='String' value='{{ exit.macro }}'>
-    <input type='hidden' data-field='pack' name='flags.hotspots.exit.pack' data-dtype='String' value='{{ exit.pack }}'>
+    <input type='hidden' name='flags.hotspots.exit.uuid' data-dtype='String' value='{{ exit.uuid }}'>
     <div class='hotspots-macro-target'>
+      <i class='hotspots-delete-macro fas fa-times {{#if exit.uuid }}enabled{{/if}}'></i>
       <img src='{{#if exit.img }}{{ exit.img }}{{else}}data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs={{/if}}'>
     </div>
   </div>

@@ -1,9 +1,19 @@
 const Foundry = require("./utils/foundry");
-const MacroManager = require("./MacroManager");
-const ALLOWABLE_TYPES = [
+const Entity = require("./Entity");
+
+const SUPPORTED_DRAWING_TYPES = [
   Foundry.CONST.DRAWING_TYPES.RECTANGLE,
   Foundry.CONST.DRAWING_TYPES.ELLIPSE,
   Foundry.CONST.DRAWING_TYPES.POLYGON,
+];
+const SUPPORTED_ENTITY_TYPES = [
+  "Actor",
+  "Item",
+  "Scene",
+  "JournalEntry",
+  "Macro",
+  "RollTable",
+  "Playlist",
 ];
 
 class DrawingConfigManager {
@@ -16,7 +26,10 @@ class DrawingConfigManager {
 
   static async handleRenderDrawingConfig(_, html, data) {
     if (
-      !(Foundry.game().user.isGM && ALLOWABLE_TYPES.includes(data.object.type))
+      !(
+        Foundry.game().user.isGM &&
+        SUPPORTED_DRAWING_TYPES.includes(data.object.type)
+      )
     )
       return;
     const hotspotData = await this.prepareData(data);
@@ -29,10 +42,9 @@ class DrawingConfigManager {
     const hotspotData = data.object.flags.hotspots || {};
     await Promise.all(
       Object.values(hotspotData)
-        .filter(({ macro }) => macro && macro.length)
+        .filter(({ uuid }) => uuid && uuid.length)
         .map(async (dataset) => {
-          const macro = await MacroManager.find(dataset.macro, dataset.pack);
-          dataset.img = macro.data.img;
+          dataset.img = await Entity.fromUuid(dataset.uuid).getImg();
         })
     );
     return hotspotData;
@@ -59,17 +71,17 @@ class DrawingConfigManager {
   }
 
   static async handleDrop(event) {
-    const data = JSON.parse(event.dataTransfer.getData("text/plain"));
-    if (data.type !== "Macro") return;
-    const { id, pack } = data;
-    const macro = await MacroManager.find(id, pack);
+    const { type, pack, id } = JSON.parse(
+      event.dataTransfer.getData("text/plain")
+    );
+    if (!SUPPORTED_ENTITY_TYPES.includes(type)) return;
+    const uuid = pack ? `Compendium.${pack}.${id}` : `${type}.${id}`;
+    const entity = Entity.fromUuid(uuid);
     const img =
       event.target.tagName === "IMG" ? event.target : event.target.firstChild;
-    img.src = macro.data.img;
+    img.src = await entity.getImg();
     img.previousElementSibling.classList.add("enabled");
-    const $group = $(img).closest(".form-group");
-    $group.find("input[data-field='macro']").val(id);
-    $group.find("input[data-field='pack']").val(pack);
+    $(img).closest(".form-group").find("input[type='hidden']").val(uuid);
   }
 
   static addDeleteListeners(html) {
@@ -77,8 +89,7 @@ class DrawingConfigManager {
       target.classList.remove("enabled");
       const $target = $(target);
       const $group = $target.closest(".form-group");
-      $group.find("input[data-field='macro']").val("");
-      $group.find("input[data-field='pack']").val("");
+      $group.find("input[type='hidden']").val("");
       $group
         .find("img")
         .attr(

@@ -9,6 +9,9 @@ module.exports = {
   DragDrop,
   Hooks,
   CONST,
+  fromUuid,
+  Journal,
+  ui,
   game: () => game,
   canvas: () => canvas,
 };

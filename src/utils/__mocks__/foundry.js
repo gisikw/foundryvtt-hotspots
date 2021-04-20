@@ -10,4 +10,7 @@ module.exports = {
       (hooks[event] || []).forEach((cb) => cb(payload));
     },
   },
+  CONST: {
+    DRAWING_TYPES: {},
+  },
 };

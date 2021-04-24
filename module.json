@@ -7,13 +7,5 @@
   "minimumCoreVersion": "0.7.9",
   "socket": "true",
   "scripts": ["dist/main.js"],
-  "styles": ["styles/main.css"],
-  "packs": [
-    {
-      "name": "hotspot-macros",
-      "label": "Hotspot Macros",
-      "path": "packs/hotspot-macros.db",
-      "entity": "Macro"
-    }
-  ]
+  "styles": ["styles/main.css"]
 }

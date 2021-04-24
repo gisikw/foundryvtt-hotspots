@@ -1,11 +1,20 @@
 {
   "name": "hotspots",
   "title": "Hotspots",
-  "description": "A tool for making drawings more interactive",
+  "description": "Drag-and-drop interactive drawings in FoundryVTT",
   "author": "Kevin Gisi",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "minimumCoreVersion": "0.7.9",
   "socket": "true",
   "scripts": ["dist/main.js"],
-  "styles": ["styles/main.css"]
+  "styles": ["styles/main.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "manifest": "https://raw.githubusercontent.com/gisikw/foundryvtt-hotspots/master/module.json",
+  "download": "https://github.com/gisikw/foundryvtt-hotspots/archive/v0.1.0.zip"
 }

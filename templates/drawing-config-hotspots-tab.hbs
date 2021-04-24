@@ -1,35 +1,58 @@
-<div class='tab' data-tab='hotspots'>
-  <p class='notes'>
-    Drag and drop macros from the directory, hotbar, or a
-    compendium into the boxes below.
+<div class="tab" data-tab="hotspots">
+  <p class="notes">
+    {{localize "Hotspots.DragNDropNotes"}}
   </p>
-  <p class='notes'>
-    By default, the macros will fire even when the drawing is hidden to players.
+  <p class="notes">
+    {{localize "Hotspots.HiddenNotes"}}
   </p>
-  <hr>
+  <hr />
   {{#each hotspots}}
-    <h3 class='form-header'><i class="fas {{ this.categoryIcon }}"/></i> {{ this.title }}</h3>
-    <p class='notes'>{{ this.description }}</p>
-    <div class='form-group hotspots'>
-      <div class='hotspots-target'>
-        <input type='hidden' name='flags.hotspots.{{ @key }}.uuid' data-dtype='String' value='{{ this.uuid }}'>
-        <i class='hotspots-delete fas fa-times {{#if this.uuid }}enabled{{/if}}'></i>
-        <i class='hotspots-icon fas {{ this.icon }}'></i>
-        <img src='{{ this.img }}'>
+    <h3 class="form-header">
+      <i class="fas {{this.categoryIcon}}"></i>
+      {{this.title}}
+    </h3>
+    <p class="notes">
+      {{this.description}}
+    </p>
+    <div class="form-group hotspots">
+      <div class="hotspots-target">
+        <input
+          type="hidden"
+          name="flags.hotspots.{{@key}}.uuid"
+          data-dtype="String"
+          value="{{this.uuid}}"
+        />
+        <i
+          class="hotspots-delete fas fa-times {{condStr this.uuid "enabled"}}"
+        ></i>
+        <i class="hotspots-icon fas {{this.icon}}"></i>
+        <img src="{{this.img}}" />
       </div>
-      <div class='hotspots-fields {{#if this.uuid }} enabled{{/if}}'>
+      <div class="hotspots-fields {{condStr this.uuid "enabled"}}">
         <div>
-          <span class='hotspots-name'>{{ this.name }}</span>
-          {{ ' ' }}
-          <span class='hotspots-type'>({{ this.type }})</span>
-          <hr>
+          <span class="hotspots-name">
+            {{this.name}}
+          </span>
+          {{" "}}
+          <span class="hotspots-type">
+            ({{this.type}})
+          </span>
+          <hr />
         </div>
-        <div class='hotspots-field'>
-          <input type='checkbox' id='hotspots.{{ @key }}.disableHidden' name='flags.hotspots.{{ @key }}.disableHidden' data-dtype='Boolean' {{#if this.disableHidden }}checked{{/if}}>
-          <label for='hotspots.{{ @key }}.disableHidden'>Disable when hidden</label>
+        <div class="hotspots-field">
+          <input
+            type="checkbox"
+            id="hotspots.{{@key}}.disableHidden"
+            name="flags.hotspots.{{@key}}.disableHidden"
+            data-dtype="Boolean"
+            {{checked this.disableHidden}}
+          />
+          <label for="hotspots.{{@key}}.disableHidden">
+            {{localize "Hotspots.DisableHiddenCTA"}}
+          </label>
         </div>
       </div>
     </div>
-    <hr>
+    <hr />
   {{/each}}
 </div>

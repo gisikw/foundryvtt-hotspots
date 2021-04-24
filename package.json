@@ -1,14 +1,14 @@
 {
   "name": "foundryvtt-hotspots",
-  "version": "1.0.0",
-  "description": "FoundryVTT module for attaching macros to drawings ",
+  "version": "0.1.0",
+  "description": "Drag-and-drop interactive drawings in FoundryVTT",
   "private": true,
   "scripts": {
     "test": "jest",
     "build": "webpack",
     "build:watch": "webpack --watch",
     "lint": "eslint src",
-    "format": "prettier --write \"**/*.+(js|json|css|md|yml|yaml)\""
+    "format": "prettier --write \"**/*.+(js|json|css|md|hbs)\""
   },
   "repository": {
     "type": "git",

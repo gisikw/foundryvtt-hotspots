@@ -8,25 +8,26 @@ const SUPPORTED_DRAWING_TYPES = [
 ];
 const BASE_HOTSPOT_DATA = {
   click: {
-    title: "Click",
+    title: Foundry.game().i18n.localize("Hotspots.ClickTitle"),
     categoryIcon: "fa-mouse-pointer",
-    description:
-      "This macro will fire when a player clicks within the bounds of the drawing.",
+    description: Foundry.game().i18n.localize("Hotspots.ClickDescription"),
   },
   enter: {
-    title: "Enter",
+    title: Foundry.game().i18n.localize("Hotspots.EnterTitle"),
     categoryIcon: "fa-sign-in-alt",
-    description:
-      "Select a macro to fire when a player's token enters the bounds of the drawing.",
+    description: Foundry.game().i18n.localize("Hotspots.EnterDescription"),
   },
   exit: {
-    title: "Exit",
+    title: Foundry.game().i18n.localize("Hotspots.ExitTitle"),
     categoryIcon: "fa-sign-out-alt",
-    description:
-      "Select a macro to fire when a player's token leaves the bounds of the drawing.",
+    description: Foundry.game().i18n.localize("Hotspots.ExitDescription"),
   },
 };
 const BLANK_IMG = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+
+Foundry.Handlebars.registerHelper({
+  condStr: (q, r) => (q ? r : ""),
+});
 
 class DrawingConfigManager {
   static initialize() {

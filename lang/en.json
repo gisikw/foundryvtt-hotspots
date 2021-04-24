@@ -1,0 +1,12 @@
+{
+  "Hotspots.NavTitle": "Hotspots",
+  "Hotspots.DragNDropNotes": "Drag and drop an entity into the boxes below.",
+  "Hotspots.HiddenNotes": "By default, the macros will fire even when the drawing is hidden to players.",
+  "Hotspots.DisableHiddenCTA": "Disable when hidden",
+  "Hotspots.ClickTitle": "Click",
+  "Hotspots.ClickDescription": "This entity will trigger when a player clicks within the bounds of the drawing.",
+  "Hotspots.EnterTitle": "Enter",
+  "Hotspots.EnterDescription": "This entity will trigger when a player's token enters the bounds of the drawing",
+  "Hotspots.ExitTitle": "Exit",
+  "Hotspots.ExitDescription": "This entity will trigger when a player's token leaves the bounds of the drawing"
+}

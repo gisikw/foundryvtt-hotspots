@@ -12,5 +12,4 @@ Hotspots attached to macros should not execute locally, as `eval` is a security 
 
 - Extract intersection logic to a wrapper class
 - Integration tests? Build Foundry & drive the UI as a Github Action?
-- Dynamically build module.json to add compendia with good test cases?
-- A Github action that verifies `npm run build` doesn't stage any changes
+- Dynamically build module.json to add compendia with good test cases in dev mode?

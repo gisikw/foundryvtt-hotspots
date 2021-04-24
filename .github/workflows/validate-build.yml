@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Validate Build
 on:
   push:
   pull_request:
@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: npx prettier --check "**/*.+(js|json|css|md|yml|yaml)"
       - uses: actions/setup-node@v1
         with:
           node-version: 15.x
       - run: npm ci
+      - run: npx prettier --check "**/*.+(js|json|css|md|yml|hbs)"
       - run: npm run lint
       - run: npm test
+      - run: npm run build && git diff --exit-code

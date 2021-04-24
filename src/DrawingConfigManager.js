@@ -1,5 +1,6 @@
 const Foundry = require("./utils/foundry");
 const Entity = require("./Entity");
+require("./utils/handlebarsHelpers");
 
 const SUPPORTED_DRAWING_TYPES = [
   Foundry.CONST.DRAWING_TYPES.RECTANGLE,
@@ -24,10 +25,6 @@ const BASE_HOTSPOT_DATA = {
   },
 };
 const BLANK_IMG = "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
-
-Foundry.Handlebars.registerHelper({
-  condStr: (q, r) => (q ? r : ""),
-});
 
 class DrawingConfigManager {
   static initialize() {

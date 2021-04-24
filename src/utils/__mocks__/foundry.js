@@ -13,4 +13,12 @@ module.exports = {
   CONST: {
     DRAWING_TYPES: {},
   },
+  Handlebars: {
+    registerHelper() {},
+  },
+  game: () => ({
+    i18n: {
+      localize() {},
+    },
+  }),
 };

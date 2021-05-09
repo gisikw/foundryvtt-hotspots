@@ -27,3 +27,6 @@ jobs:
 
           # Download latest version using sessionid
           curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt.zip
+
+          # Validation step
+          ls -lah foundryvtt.zip

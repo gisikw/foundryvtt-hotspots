@@ -4,7 +4,8 @@
   "description": "FoundryVTT module for attaching macros to drawings ",
   "private": true,
   "scripts": {
-    "test": "jest && cucumber-js",
+    "test": "jest",
+    "test:integration": "cucumber-js",
     "build": "webpack",
     "build:watch": "webpack --watch",
     "lint": "eslint src",

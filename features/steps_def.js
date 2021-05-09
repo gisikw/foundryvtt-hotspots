@@ -4,14 +4,20 @@ const FOUNDRY_PATH = "tmp"; // FIXME
 const fs = require("fs");
 const util = require("util");
 const streamPipeline = util.promisify(require("stream").pipeline);
+const exec = util.promisify(require('child_process').exec);
+const mkdir = util.promisify(fs.mkdir);
 
-const { Given, When, Then } = require("@cucumber/cucumber");
+const { Given, When, Then, Before } = require("@cucumber/cucumber");
 const assert = require("assert");
 const webdriver = require("selenium-webdriver");
 const fetch = require("node-fetch");
 
 let lastSystemReferenced;
 let lastWorldReferenced;
+
+Before(async () => {
+  await mkdir(`${FOUNDRY_PATH}/Data`, { recursive: true });
+});
 
 Given(
   "Foundry has the system {string} installed",
@@ -37,8 +43,9 @@ Given(
       throw new Error(`unexpected response ${download.statusText}`);
     await streamPipeline(
       download.body,
-      fs.createWriteStream(`${FOUNDRY_PATH}/${game.name}.zip`)
+      fs.createWriteStream(`${FOUNDRY_PATH}/Data/${game.name}.zip`)
     );
+    await exec(`unzip ${FOUNDRY_PATH}/Data/${game.name}.zip -d ${FOUNDRY_PATH}/Data`);
   }
 );
 

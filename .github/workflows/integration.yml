@@ -31,3 +31,4 @@ jobs:
           curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt/foundryvtt.zip
       - run: (cd foundryvtt && unzip foundryvtt.zip)
       - run: (cd foundryvtt && node resources/app/main.js --dataPath=$HOME/foundrydata) &
+      - run: npm run test:integration

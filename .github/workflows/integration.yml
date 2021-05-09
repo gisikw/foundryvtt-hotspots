@@ -5,6 +5,9 @@ jobs:
   integration:
     runs-on: ubuntu-latest
     steps:
+      - run: sudo apt install unzip
+      - run: |
+        mkdir foundryvtt foundrydata
       - shell: bash
         env:
           FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
@@ -26,7 +29,6 @@ jobs:
           version_path=$(echo "$userpage" | grep 'Download Linux Application' | sed 's/^.*href="\([^"]*\).*$/\1/')
 
           # Download latest version using sessionid
-          curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt.zip
-
-          # Validation step
-          ls -lah foundryvtt.zip
+          curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt/foundryvtt.zip
+      - run: (cd foundryvtt && unzip foundryvtt.zip)
+      - run: (cd foundryvtt && node resources/app/main.js --dataPath=$HOME/foundrydata) &

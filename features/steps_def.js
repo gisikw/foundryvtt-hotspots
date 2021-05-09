@@ -4,7 +4,7 @@ const FOUNDRY_PATH = "tmp"; // FIXME
 const fs = require("fs");
 const util = require("util");
 const streamPipeline = util.promisify(require("stream").pipeline);
-const exec = util.promisify(require('child_process').exec);
+const exec = util.promisify(require("child_process").exec);
 const mkdir = util.promisify(fs.mkdir);
 
 const { Given, When, Then, Before } = require("@cucumber/cucumber");
@@ -45,7 +45,9 @@ Given(
       download.body,
       fs.createWriteStream(`${FOUNDRY_PATH}/Data/${game.name}.zip`)
     );
-    await exec(`unzip ${FOUNDRY_PATH}/Data/${game.name}.zip -d ${FOUNDRY_PATH}/Data`);
+    await exec(
+      `unzip ${FOUNDRY_PATH}/Data/${game.name}.zip -d ${FOUNDRY_PATH}/Data`
+    );
   }
 );
 

@@ -6,8 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt install unzip
-      - run: |
-        mkdir foundryvtt foundrydata
+      - run: mkdir foundryvtt foundrydata
       - shell: bash
         env:
           FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}

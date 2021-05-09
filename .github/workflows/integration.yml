@@ -1,0 +1,29 @@
+name: Integration
+on:
+  push:
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    steps:
+      - shell: bash
+        env:
+          FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
+          FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
+        run: |
+          # Get csrf prereqs
+          homepage=$(curl -is "https://foundryvtt.com")
+          middleware=$(echo "$homepage" | grep -m 1 'csrfmiddlewaretoken' | sed 's/^.*value="\([^"]*\).*$/\1/')
+          csrftoken=$(echo "$homepage" | grep 'Set-Cookie' | sed 's/^.*csrftoken=\([^;]*\).*$/\1/')
+
+          # Fetch session and username from auth credentials
+          login_page=$(curl -is 'https://foundryvtt.com/auth/login/' -H "Referer: https://foundryvtt.com/" -H "Cookie: csrftoken=$csrftoken" --data-raw "csrfmiddlewaretoken=$middleware&login_username=$FOUNDRY_USERNAME&login_password=$FOUNDRY_PASSWORD&login_redirect=%2F")
+          sessionid=$(echo "$login_page" | grep 'Set-Cookie: sessionid' | sed 's/^.*sessionid=\([^;]*\).*$/\1/')
+          username=$(echo "$login_page" | grep 'You are now logged in as' | sed 's/^.*You are now logged in as \([^!]*\).*$/\1/')
+
+          # Fetch license and latest version
+          userpage=$(curl -is "https://foundryvtt.com/community/$username/licenses" -H "Cookie: sessionid=$sessionid")
+          license=$(echo "$userpage" | grep 'license-key' | sed 's/^.*<code>\([^<]*\).*$/\1/')
+          version_path=$(echo "$userpage" | grep 'Download Linux Application' | sed 's/^.*href="\([^"]*\).*$/\1/')
+
+          # Download latest version using sessionid
+          curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt.zip

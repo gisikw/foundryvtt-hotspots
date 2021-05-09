@@ -36,7 +36,9 @@ Given(
     const download = await fetch(downloadUrl);
     if (!download.ok)
       throw new Error(`unexpected response ${download.statusText}`);
-    await fs.promises.mkdir(`${FOUNDRY_PATH}/Data/systems`, { recursive: true });
+    await fs.promises.mkdir(`${FOUNDRY_PATH}/Data/systems`, {
+      recursive: true,
+    });
     await streamPipeline(
       download.body,
       fs.createWriteStream(`${FOUNDRY_PATH}/Data/systems/${game.name}.zip`)

@@ -54,5 +54,8 @@ jobs:
           timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:60119)" != "302" ]]; do sleep 2; done' || false
 
       - name: Run integration suite
-        run: npm i && FOUNDRY_URL='http://localhost:60199' npm run test:integration
         working-directory: foundryvtt-hotspots
+        run: |
+          echo "Beginning integration suite"
+          npm i
+          FOUNDRY_URL='http://localhost:60199' npm run test:integration

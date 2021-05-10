@@ -1,6 +1,6 @@
 const fetch = require("node-fetch");
 
-const FOUNDRY_URL = "http://localhost:30000"; // FIXME: This should pull from an env var or something
+const FOUNDRY_URL = process.env.FOUNDRY_URL || "http://localhost:30000";
 const localModuleHost = require("./localModuleHost");
 
 async function getPackages(type) {

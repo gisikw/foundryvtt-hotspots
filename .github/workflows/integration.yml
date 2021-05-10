@@ -50,12 +50,14 @@ jobs:
           # Change the port and restart the server
           sed -i 's/"port": [0-9]*/"port": 60119/' $GITHUB_WORKSPACE/foundrydata/Config/options.json
           kill $FOUNDRY_PID
-          node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
-          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:60119)" != "302" ]]; do sleep 2; done' || false
 
       - name: Run integration suite
         working-directory: foundryvtt-hotspots
         run: |
-          echo "Beginning integration suite"
+          # Spin up the application
+          (cd $GITHUB_WORKSPACE/foundryvtt && node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &)
+          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:60119)" != "302" ]]; do sleep 2; done' || false
+
+          # Install dependencies and run integration suite
           npm i
           FOUNDRY_URL='http://localhost:60199' npm run test:integration

@@ -6,8 +6,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt install unzip
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: foundryvtt-hotspots
       - run: mkdir foundryvtt foundrydata
-      - shell: bash
+      - run: ls && pwd
+      - name: Install FoundryVTT
+        shell: bash
         env:
           FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
           FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
@@ -25,10 +31,15 @@ jobs:
           # Fetch license and latest version
           userpage=$(curl -is "https://foundryvtt.com/community/$username/licenses" -H "Cookie: sessionid=$sessionid")
           license=$(echo "$userpage" | grep 'license-key' | sed 's/^.*<code>\([^<]*\).*$/\1/')
-          version_path=$(echo "$userpage" | grep 'Download Linux Application' | sed 's/^.*href="\([^"]*\).*$/\1/')
+          version_path=$(echo "$userpage" | grep 'Download Node.js Application' | sed 's/^.*href="\([^"]*\).*$/\1/')
 
           # Download latest version using sessionid
           curl -sL "https://foundryvtt.com$version_path" -H "Cookie: sessionid=$sessionid" > foundryvtt/foundryvtt.zip
-      - run: (cd foundryvtt && unzip foundryvtt.zip)
-      - run: (cd foundryvtt && node resources/app/main.js --dataPath=$HOME/foundrydata) &
-      - run: npm run test:integration
+
+          # Unzip and run
+          cd foundryvtt
+          unzip foundryvtt.zip
+          node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
+      - name: Run integration suite
+        run: npm i && npm run test:integration
+        working-directory: foundryvtt-hotspots

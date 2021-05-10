@@ -8,7 +8,8 @@
     "build": "webpack",
     "build:watch": "webpack --watch",
     "lint": "eslint src",
-    "format": "prettier --write \"**/*.+(js|json|css|md|yml|yaml)\""
+    "format": "prettier --write \"**/*.+(js|json|css|md|yml|yaml)\"",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -26,9 +27,15 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-import": "^2.22.1",
+    "husky": "^6.0.0",
     "jest": "^26.6.3",
+    "lint-staged": "^11.0.0",
     "prettier": "2.2.1",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.+(js|json|css|md|yml|yaml)": "prettier --write"
   }
 }

@@ -7,7 +7,7 @@
     "test": "jest",
     "build": "webpack",
     "build:watch": "webpack --watch",
-    "lint": "eslint src",
+    "lint": "eslint src --cache",
     "format": "prettier --write \"**/*.+(js|json|css|md|yml|yaml)\"",
     "prepare": "husky install"
   },

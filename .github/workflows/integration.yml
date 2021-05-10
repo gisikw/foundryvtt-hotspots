@@ -40,14 +40,18 @@ jobs:
           cd foundryvtt
           unzip foundryvtt.zip
           node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
+          echo "Saving PID"
           FOUNDRY_PID=$!
 
+          echo "Entering license"
           # Enter license, accept EULA
           curl -is "http://localhost:30000/license" --data "action=enterKey&licenseKey=$license"
           curl -is "http://localhost:30000/license" --data "agree=on&accept="
 
+          echo "Replacing the port"
           # Change the port and restart the server
           sed -i 's/"port": [0-9]*/"port": 60119/' $GITHUB_WORKSPACE/foundrydata/Config/options.json
+          echo "Killing the server"
           kill $FOUNDRY_PID
           node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
 

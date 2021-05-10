@@ -9,7 +9,7 @@ let lastSystemReferenced;
 
 Given(
   "Foundry has the {string} system installed",
-  { timeout: 30000 },
+  { timeout: 60000 },
   async (system) => {
     lastSystemReferenced = system;
     FVTTC.installByTitle("system", system);
@@ -23,7 +23,7 @@ Given("Foundry has a world named {string}", async (world) => {
 
 Given(
   "Foundry has the {string} module installed",
-  { timeout: 30000 },
+  { timeout: 60000 },
   async (module) => {
     FVTTC.installByTitle("module", module);
   }
@@ -31,7 +31,7 @@ Given(
 
 Given(
   "Foundry has the local module installed",
-  { timeout: 30000 },
+  { timeout: 60000 },
   async () => {
     await FVTTC.installLocalModule();
   }

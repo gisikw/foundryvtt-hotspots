@@ -40,6 +40,17 @@ jobs:
           cd foundryvtt
           unzip foundryvtt.zip
           node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
+          FOUNDRY_PID=$!
+
+          # Enter license, accept EULA
+          curl -is "http://localhost:30000/license" --data "action=enterKey&licenseKey=$license"
+          curl -is "http://localhost:30000/license" --data "agree=on&accept="
+
+          # Change the port and restart the server
+          sed -i 's/"port": [0-9]*/"port": 60119/' $GITHUB_WORKSPACE/foundrydata/Config/options.json
+          kill $FOUNDRY_PID
+          node resources/app/main.js --dataPath=$GITHUB_WORKSPACE/foundrydata &
+
       - name: Run integration suite
         run: npm i && npm run test:integration
         working-directory: foundryvtt-hotspots

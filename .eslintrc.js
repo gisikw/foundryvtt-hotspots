@@ -15,5 +15,6 @@ module.exports = {
     "no-console": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
+    "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
   },
 };
